@@ -2,244 +2,497 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Pousada Vale Verde — Reservas</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
     font-family: Arial, sans-serif;
-    background: #f4f4f4;
+    background: #f0f0f0;
     color: #222;
-    padding: 24px 16px;
+    min-height: 100vh;
   }
-  h1 {
-    font-size: 1.4rem;
-    margin-bottom: 24px;
-    color: #2d5a27;
-  }
-  .card {
-    background: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 24px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-  }
-  .card h2 {
-    font-size: 1rem;
-    margin-bottom: 16px;
-    color: #444;
-  }
-  .form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .form-group.full { grid-column: 1 / -1; }
-  label { font-size: 0.82rem; font-weight: bold; color: #555; }
-  input, select {
-    padding: 8px 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    width: 100%;
-  }
-  input:focus, select:focus {
-    outline: none;
-    border-color: #2d5a27;
-  }
-  button.btn-salvar {
-    margin-top: 16px;
-    width: 100%;
-    padding: 10px;
+
+  header {
     background: #2d5a27;
     color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
-  button.btn-salvar:hover { background: #3a7a32; }
+  header h1 { font-size: 1.15rem; }
+  header p { font-size: 0.78rem; opacity: 0.75; margin-top: 2px; }
+
+  /* ===================== DESKTOP ===================== */
+  .desktop-layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 0;
+    min-height: calc(100vh - 52px);
+  }
+
+  /* LEFT — lista */
+  .left {
+    padding: 24px;
+    overflow-y: auto;
+  }
+  .left h2 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #777;
+    margin-bottom: 14px;
+  }
 
   table {
     width: 100%;
     border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     font-size: 0.9rem;
   }
   th {
     text-align: left;
-    padding: 8px 10px;
-    background: #f0f0f0;
-    border-bottom: 2px solid #ddd;
-    font-size: 0.8rem;
-    color: #555;
+    padding: 10px 14px;
+    background: #f7f7f7;
+    border-bottom: 2px solid #e8e8e8;
+    font-size: 0.78rem;
+    color: #666;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
   td {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
+    padding: 12px 14px;
+    border-bottom: 1px solid #f0f0f0;
     vertical-align: middle;
   }
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #fafafa; }
-  .btn-excluir {
+  tr:hover td { background: #fafff9; }
+  .chale-badge {
+    display: inline-block;
+    background: #2d5a27;
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+  .valor-total { font-weight: bold; color: #2d5a27; }
+  .btn-excluir-table {
     background: none;
-    border: 1px solid #e55;
-    color: #e55;
+    border: 1px solid #d44;
+    color: #d44;
     padding: 4px 10px;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
   }
-  .btn-excluir:hover { background: #fee; }
-  .vazio {
+  .btn-excluir-table:hover { background: #fee; }
+  .vazio-table {
     text-align: center;
-    padding: 30px;
-    color: #aaa;
+    padding: 40px;
+    color: #bbb;
     font-size: 0.9rem;
   }
-  @media (max-width: 500px) {
-    .form-grid { grid-template-columns: 1fr; }
-    .form-group.full { grid-column: 1; }
-    table { font-size: 0.78rem; }
-    td, th { padding: 7px 6px; }
+
+  /* RIGHT — formulário */
+  .right {
+    background: #fff;
+    border-left: 1px solid #e0e0e0;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .right h2 {
+    font-size: 1rem;
+    color: #2d5a27;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group label { font-size: 0.78rem; font-weight: bold; color: #555; }
+  .form-group input,
+  .form-group select {
+    padding: 9px 11px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.92rem;
+    width: 100%;
+  }
+  .form-group input:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: #2d5a27;
+  }
+  .form-group input[readonly] {
+    background: #eef5ed;
+    color: #2d5a27;
+    font-weight: bold;
+    border-color: #b5d4b1;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .btn-salvar-desk {
+    width: 100%;
+    padding: 11px;
+    background: #2d5a27;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 4px;
+  }
+  .btn-salvar-desk:hover { background: #3a7a32; }
+
+  /* ===================== MOBILE ===================== */
+  .mobile-layout { display: none; }
+
+  @media (max-width: 700px) {
+    .desktop-layout { display: none; }
+    .mobile-layout {
+      display: block;
+      padding-bottom: 40px;
+    }
+
+    header {
+      padding: 14px 16px;
+      padding-top: calc(14px + env(safe-area-inset-top, 0px));
+    }
+
+    .mobile-container { padding: 14px; }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .card h2 {
+      font-size: 0.9rem;
+      color: #2d5a27;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .m-form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    .m-form-group label { font-size: 0.8rem; font-weight: bold; color: #555; }
+    .m-form-group input,
+    .m-form-group select {
+      padding: 13px 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      background: #fafafa;
+    }
+    .m-form-group input:focus,
+    .m-form-group select:focus {
+      outline: none;
+      border-color: #2d5a27;
+      background: #fff;
+    }
+    .m-form-group input[readonly] {
+      background: #eef5ed;
+      color: #2d5a27;
+      font-weight: bold;
+      border-color: #b5d4b1;
+    }
+    .m-form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23555' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      background-color: #fafafa;
+      padding-right: 36px;
+    }
+
+    .btn-salvar-mobile {
+      width: 100%;
+      padding: 14px;
+      background: #2d5a27;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn-salvar-mobile:active { background: #1e3e1b; }
+
+    .reserva-item {
+      border: 1px solid #e8e8e8;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: #fafafa;
+    }
+    .reserva-item:last-child { margin-bottom: 0; }
+    .ri-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+    .ri-nome { font-weight: bold; font-size: 0.95rem; }
+    .ri-chale {
+      font-size: 0.72rem;
+      background: #2d5a27;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    .ri-detalhes {
+      font-size: 0.82rem;
+      color: #555;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 14px;
+      margin-bottom: 8px;
+    }
+    .ri-total { font-weight: bold; color: #2d5a27; margin-bottom: 10px; }
+    .btn-excluir-mobile {
+      width: 100%;
+      padding: 8px;
+      background: none;
+      border: 1px solid #d44;
+      color: #d44;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .vazio { text-align: center; padding: 24px; color: #bbb; font-size: 0.9rem; }
   }
 </style>
 </head>
 <body>
 
-<h1>🌿 Pousada Vale Verde — Controle de Reservas</h1>
+<header>
+  <div>
+    <h1>🌿 Pousada Vale Verde</h1>
+    <p>Controle de Reservas</p>
+  </div>
+</header>
 
-<!-- FORMULÁRIO -->
-<div class="card">
-  <h2>Nova Reserva</h2>
-  <div class="form-grid">
-    <div class="form-group full">
-      <label for="nome">Nome do Hóspede</label>
-      <input id="nome" type="text" placeholder="Nome completo">
+<!-- ===== DESKTOP ===== -->
+<div class="desktop-layout">
+  <!-- Lista -->
+  <div class="left">
+    <h2 id="titulo-lista">Reservas</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Telefone</th>
+          <th>Chalé</th>
+          <th>Dias</th>
+          <th>Diária</th>
+          <th>Total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tabela-body"></tbody>
+    </table>
+  </div>
+
+  <!-- Formulário -->
+  <div class="right">
+    <h2>Nova Reserva</h2>
+
+    <div class="form-group">
+      <label for="d-nome">Nome do Hóspede</label>
+      <input id="d-nome" type="text" placeholder="Nome completo">
     </div>
     <div class="form-group">
-      <label for="telefone">Telefone</label>
-      <input id="telefone" type="tel" placeholder="(00) 00000-0000">
+      <label for="d-tel">Telefone</label>
+      <input id="d-tel" type="tel" placeholder="(00) 00000-0000">
     </div>
     <div class="form-group">
-      <label for="chale">Chalé</label>
-      <select id="chale">
+      <label for="d-chale">Chalé</label>
+      <select id="d-chale">
         <option value="">Selecione...</option>
-        <option value="Chalé 1">Chalé 1</option>
-        <option value="Chalé 2">Chalé 2</option>
-        <option value="Chalé 3">Chalé 3</option>
-        <option value="Chalé 4">Chalé 4</option>
+        <option>Chalé 1</option>
+        <option>Chalé 2</option>
+        <option>Chalé 3</option>
+        <option>Chalé 4</option>
       </select>
     </div>
-    <div class="form-group">
-      <label for="dias">Dias de Estadia</label>
-      <input id="dias" type="number" min="1" placeholder="Ex: 3" oninput="calcularTotal()">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="d-dias">Dias</label>
+        <input id="d-dias" type="number" min="1" placeholder="Ex: 4" oninput="calcDesk()">
+      </div>
+      <div class="form-group">
+        <label for="d-diaria">Diária (R$)</label>
+        <input id="d-diaria" type="number" min="0" step="0.01" placeholder="Ex: 100" oninput="calcDesk()">
+      </div>
     </div>
     <div class="form-group">
-      <label for="diaria">Valor da Diária (R$)</label>
-      <input id="diaria" type="number" min="0" step="0.01" placeholder="Ex: 100.00" oninput="calcularTotal()">
+      <label>Total</label>
+      <input id="d-total" type="text" readonly placeholder="Preencha dias e diária">
     </div>
-    <div class="form-group full">
-      <label>Valor Total</label>
-      <input id="total" type="text" readonly placeholder="—" style="background:#f0f0f0; font-weight:bold; color:#2d5a27;">
-    </div>
+
+    <button class="btn-salvar-desk" onclick="salvar('desk')">✓ Salvar Reserva</button>
   </div>
-  <button class="btn-salvar" onclick="salvarReserva()">Salvar Reserva</button>
 </div>
 
-<!-- LISTA -->
-<div class="card">
-  <h2>Reservas Cadastradas</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Nome</th>
-        <th>Telefone</th>
-        <th>Chalé</th>
-        <th>Dias</th>
-        <th>Valor</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="tabelaReservas"></tbody>
-  </table>
+<!-- ===== MOBILE ===== -->
+<div class="mobile-layout">
+  <div class="mobile-container">
+
+    <div class="card">
+      <h2>Nova Reserva</h2>
+
+      <div class="m-form-group">
+        <label for="m-nome">Nome do Hóspede</label>
+        <input id="m-nome" type="text" placeholder="Nome completo" autocomplete="name">
+      </div>
+      <div class="m-form-group">
+        <label for="m-tel">Telefone</label>
+        <input id="m-tel" type="tel" placeholder="(00) 00000-0000" autocomplete="tel">
+      </div>
+      <div class="m-form-group">
+        <label for="m-chale">Chalé</label>
+        <select id="m-chale">
+          <option value="">Selecione o chalé...</option>
+          <option>Chalé 1</option>
+          <option>Chalé 2</option>
+          <option>Chalé 3</option>
+          <option>Chalé 4</option>
+        </select>
+      </div>
+      <div class="m-form-group">
+        <label for="m-dias">Dias de Estadia</label>
+        <input id="m-dias" type="number" min="1" placeholder="Ex: 4" inputmode="numeric" oninput="calcMob()">
+      </div>
+      <div class="m-form-group">
+        <label for="m-diaria">Valor da Diária (R$)</label>
+        <input id="m-diaria" type="number" min="0" step="0.01" placeholder="Ex: 100,00" inputmode="decimal" oninput="calcMob()">
+      </div>
+      <div class="m-form-group">
+        <label>Valor Total</label>
+        <input id="m-total" type="text" readonly placeholder="Preencha dias e diária">
+      </div>
+
+      <button class="btn-salvar-mobile" onclick="salvar('mob')">✓ Salvar Reserva</button>
+    </div>
+
+    <div class="card">
+      <h2 id="m-titulo-lista">Reservas</h2>
+      <div id="m-lista"></div>
+    </div>
+
+  </div>
 </div>
 
 <script>
-  function carregar() {
-    try { return JSON.parse(localStorage.getItem('reservas') || '[]'); }
+  function getReservas() {
+    try { return JSON.parse(localStorage.getItem('pousada_reservas') || '[]'); }
     catch { return []; }
   }
-  function salvar(lista) {
-    try { localStorage.setItem('reservas', JSON.stringify(lista)); } catch {}
+  function setReservas(lista) {
+    try { localStorage.setItem('pousada_reservas', JSON.stringify(lista)); } catch {}
   }
 
-  function renderizar() {
-    const lista = carregar();
-    const tbody = document.getElementById('tabelaReservas');
-    if (lista.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="6" class="vazio">Nenhuma reserva cadastrada.</td></tr>';
-      return;
-    }
-    tbody.innerHTML = lista.map((r, i) => `
-      <tr>
-        <td>${r.nome}</td>
-        <td>${r.telefone}</td>
-        <td>${r.chale}</td>
-        <td>${r.dias} dia${r.dias > 1 ? 's' : ''}</td>
-        <td>R$ ${Number(r.valor).toFixed(2).replace('.', ',')}</td>
-        <td><button class="btn-excluir" onclick="excluir(${i})">Excluir</button></td>
-      </tr>
-    `).join('');
+  function fmt(v) {
+    return Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  function salvarReserva() {
-    const nome = document.getElementById('nome').value.trim();
-    const telefone = document.getElementById('telefone').value.trim();
-    const chale = document.getElementById('chale').value;
-    const dias = parseInt(document.getElementById('dias').value);
-    const diaria = parseFloat(document.getElementById('diaria').value);
-    const valor = dias * diaria;
+  function calcDesk() {
+    const d = parseInt(document.getElementById('d-dias').value) || 0;
+    const p = parseFloat(document.getElementById('d-diaria').value) || 0;
+    document.getElementById('d-total').value = (d && p) ? 'R$ ' + fmt(d * p) : '';
+  }
+  function calcMob() {
+    const d = parseInt(document.getElementById('m-dias').value) || 0;
+    const p = parseFloat(document.getElementById('m-diaria').value) || 0;
+    document.getElementById('m-total').value = (d && p) ? 'R$ ' + fmt(d * p) : '';
+  }
 
-    if (!nome || !telefone || !chale || !dias || !diaria) {
+  function salvar(modo) {
+    const p = modo === 'desk' ? 'd-' : 'm-';
+    const nome   = document.getElementById(p + 'nome').value.trim();
+    const tel    = document.getElementById(p + 'tel').value.trim();
+    const chale  = document.getElementById(p + 'chale').value;
+    const dias   = parseInt(document.getElementById(p + 'dias').value);
+    const diaria = parseFloat(document.getElementById(p + 'diaria').value);
+
+    if (!nome || !tel || !chale || !dias || !diaria) {
       alert('Preencha todos os campos.');
       return;
     }
 
-    const lista = carregar();
-    lista.push({ nome, telefone, chale, dias, diaria, valor });
-    salvar(lista);
+    const lista = getReservas();
+    lista.push({ nome, tel, chale, dias, diaria, valor: dias * diaria });
+    setReservas(lista);
     renderizar();
 
-    document.getElementById('nome').value = '';
-    document.getElementById('telefone').value = '';
-    document.getElementById('chale').value = '';
-    document.getElementById('dias').value = '';
-    document.getElementById('diaria').value = '';
-    document.getElementById('total').value = '';
+    ['nome','tel','chale','dias','diaria','total'].forEach(f => {
+      const el = document.getElementById(p + f);
+      if (el) el.value = '';
+    });
   }
 
   function excluir(i) {
     if (!confirm('Excluir esta reserva?')) return;
-    const lista = carregar();
+    const lista = getReservas();
     lista.splice(i, 1);
-    salvar(lista);
+    setReservas(lista);
     renderizar();
   }
 
-  function calcularTotal() {
-    const dias = parseInt(document.getElementById('dias').value) || 0;
-    const diaria = parseFloat(document.getElementById('diaria').value) || 0;
-    const total = dias * diaria;
-    document.getElementById('total').value = total > 0
-      ? 'R$ ' + total.toFixed(2).replace('.', ',')
-      : '';
+  function renderizar() {
+    const lista = getReservas();
+    const count = lista.length;
+
+    // Desktop
+    const tbody = document.getElementById('tabela-body');
+    document.getElementById('titulo-lista').textContent = `Reservas (${count})`;
+    if (count === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="vazio-table">Nenhuma reserva cadastrada.</td></tr>';
+    } else {
+      tbody.innerHTML = lista.map((r, i) => `
+        <tr>
+          <td>${r.nome}</td>
+          <td>${r.tel}</td>
+          <td><span class="chale-badge">${r.chale}</span></td>
+          <td>${r.dias}d</td>
+          <td>R$ ${fmt(r.diaria)}</td>
+          <td class="valor-total">R$ ${fmt(r.valor)}</td>
+          <td><button class="btn-excluir-table" onclick="excluir(${i})">Excluir</button></td>
+        </tr>
+      `).join('');
+    }
+
+    // Mobile
+    const mLista = document.getElementById('m-lista');
+    document.getElementById('m-titulo-lista').textContent = `Reservas (${count})`;
+    if (count === 0) {
+      mLista.innerHTML = '<div class="vazio">Nenhuma reserva cadastrada.</div>';
+    } else {
+      mLista.innerHTML = lista.map((r, i) => `
+        <div class="reserva-item">
+          <div class="ri-header">
+            <div class="ri-nome">${r.nome}</div>
+            <div class="ri-chale">${r.chale}</div>
+          </div>
+          <div class="ri-detalhes">
+            <span>📞 ${r.tel}</span>
+            <span>🌙 ${r.dias} dia${r.dias > 1 ? 's' : ''}</span>
+            <span>💵 R$ ${fmt(r.diaria)}/dia</span>
+          </div>
+          <div class="ri-total">Total: R$ ${fmt(r.valor)}</div>
+          <button class="btn-excluir-mobile" onclick="excluir(${i})">Excluir reserva</button>
+        </div>
+      `).join('');
+    }
   }
 
   renderizar();

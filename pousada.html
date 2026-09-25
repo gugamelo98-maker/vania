@@ -1,0 +1,920 @@
+<title>Pousada Vale Verde</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap">
+
+<style>
+  :root {
+    --bg: #F5EFE4;
+    --surface: #FFFFFF;
+    --surface2: #F0E9DC;
+    --primary: #4A6741;
+    --primary-light: #658C5A;
+    --primary-muted: #D4E3D0;
+    --accent: #C4714A;
+    --accent-muted: #F0D9CC;
+    --text: #2C2C2C;
+    --text-2: #5A5A5A;
+    --text-3: #8A8A8A;
+    --border: #DDD5C5;
+    --shadow: rgba(74, 103, 65, 0.12);
+    --chale-1: #4A6741;
+    --chale-2: #6B5B45;
+    --chale-3: #45657A;
+    --chale-4: #7A5B45;
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1E211D;
+      --surface: #272B25;
+      --surface2: #2F342D;
+      --primary: #7AAF70;
+      --primary-light: #9DC990;
+      --primary-muted: #2A3828;
+      --accent: #D4845E;
+      --accent-muted: #3A2820;
+      --text: #EDE8DF;
+      --text-2: #B8B0A5;
+      --text-3: #7A7265;
+      --border: #3A3D38;
+      --shadow: rgba(0,0,0,0.3);
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #1E211D;
+    --surface: #272B25;
+    --surface2: #2F342D;
+    --primary: #7AAF70;
+    --primary-light: #9DC990;
+    --primary-muted: #2A3828;
+    --accent: #D4845E;
+    --accent-muted: #3A2820;
+    --text: #EDE8DF;
+    --text-2: #B8B0A5;
+    --text-3: #7A7265;
+    --border: #3A3D38;
+    --shadow: rgba(0,0,0,0.3);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100%;
+    padding-inline: 0;
+    padding-block: 0;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: var(--primary);
+    color: #fff;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 100;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+  .logo-area { display: flex; align-items: center; gap: 12px; }
+  .logo-icon {
+    width: 40px; height: 40px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .logo-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+  }
+  .logo-text span {
+    font-size: 0.7rem;
+    font-weight: 300;
+    opacity: 0.8;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .header-date {
+    font-size: 0.78rem;
+    opacity: 0.75;
+    font-weight: 300;
+    text-align: right;
+  }
+
+  /* MAIN LAYOUT */
+  .main-layout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 0;
+    min-height: calc(100vh - 76px);
+  }
+
+  /* LEFT PANEL */
+  .left-panel {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* CHALES GRID */
+  .section-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-3);
+    margin-bottom: 12px;
+  }
+  .chales-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .chale-card {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 16px;
+    border: 1.5px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .chale-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--shadow); }
+  .chale-card.ocupado {
+    border-color: var(--accent);
+    background: var(--accent-muted);
+  }
+  .chale-card.livre { border-color: var(--primary-muted); }
+  .chale-stripe {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    border-radius: 14px 14px 0 0;
+  }
+  .chale-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .chale-name {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+  .chale-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+  .badge-livre {
+    background: var(--primary-muted);
+    color: var(--primary);
+  }
+  .badge-ocupado {
+    background: var(--accent-muted);
+    color: var(--accent);
+  }
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+  .dot-livre { background: var(--primary); }
+  .dot-ocupado { background: var(--accent); }
+  .chale-guest-info {
+    margin-top: 10px;
+    font-size: 0.72rem;
+    color: var(--text-2);
+    line-height: 1.5;
+  }
+  .chale-guest-info strong { color: var(--text); font-weight: 600; }
+
+  /* RESERVAS LIST */
+  .reservas-section { flex: 1; }
+  .reservas-list { display: flex; flex-direction: column; gap: 10px; }
+  .reserva-item {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: box-shadow 0.2s;
+  }
+  .reserva-item:hover { box-shadow: 0 3px 12px var(--shadow); }
+  .reserva-chale-badge {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .reserva-info { flex: 1; min-width: 0; }
+  .reserva-nome {
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .reserva-meta {
+    font-size: 0.73rem;
+    color: var(--text-2);
+    margin-top: 2px;
+  }
+  .reserva-valor {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--primary);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .btn-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-3);
+    padding: 4px;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .btn-delete:hover { background: var(--accent-muted); color: var(--accent); }
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-3);
+  }
+  .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 10px; }
+  .empty-state p { font-size: 0.85rem; }
+
+  /* RIGHT PANEL — FORM */
+  .right-panel {
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: calc(100vh - 76px);
+    overflow-y: auto;
+    position: sticky;
+    top: 76px;
+  }
+  .panel-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .panel-subtitle {
+    font-size: 0.78rem;
+    color: var(--text-3);
+    margin-top: 4px;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-2);
+  }
+  .form-input, .form-select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  .form-input:focus, .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-muted);
+  }
+  .form-input::placeholder { color: var(--text-3); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .prefix-input-wrap { position: relative; }
+  .prefix-input-wrap .prefix {
+    position: absolute;
+    left: 14px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.9rem;
+    color: var(--text-3);
+    pointer-events: none;
+  }
+  .prefix-input-wrap .form-input { padding-left: 26px; }
+  .chale-select-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .chale-select-btn {
+    padding: 10px 8px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    color: var(--text-2);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .chale-select-btn:hover:not(:disabled) {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-muted);
+  }
+  .chale-select-btn.selected {
+    border-color: var(--primary);
+    background: var(--primary-muted);
+    color: var(--primary);
+    font-weight: 600;
+  }
+  .chale-select-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background: var(--surface2);
+  }
+  .chale-select-btn .ocupado-tag {
+    display: block;
+    font-size: 0.62rem;
+    color: var(--accent);
+    margin-top: 2px;
+    font-weight: 400;
+  }
+  .divider { height: 1px; background: var(--border); }
+  .resumo-box {
+    background: var(--primary-muted);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .resumo-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    color: var(--text-2);
+  }
+  .resumo-row.total {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-top: 4px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  .btn-submit {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+  .btn-submit:hover { background: var(--primary-light); }
+  .btn-submit:active { transform: scale(0.99); }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--primary);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 200;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { background: var(--accent); }
+
+  /* Confirm modal */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 300;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 320px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .modal h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+  .modal p { font-size: 0.85rem; color: var(--text-2); margin-bottom: 20px; }
+  .modal-btns { display: flex; gap: 10px; }
+  .modal-btns button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .modal-btns button:hover { opacity: 0.85; }
+  .btn-cancel { background: var(--surface2); color: var(--text-2); }
+  .btn-confirm { background: var(--accent); color: #fff; }
+
+  .loading-overlay {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 400;
+    gap: 16px;
+  }
+  .loading-overlay .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--border);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-overlay p {
+    font-size: 0.85rem;
+    color: var(--text-2);
+    font-family: 'Playfair Display', serif;
+  }
+
+  @media (max-width: 900px) {
+    .main-layout {
+      grid-template-columns: 1fr;
+    }
+    .right-panel {
+      position: static;
+      height: auto;
+      border-left: none;
+      border-top: 1px solid var(--border);
+    }
+    .chales-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 500px) {
+    .left-panel { padding: 16px; }
+    .right-panel { padding: 16px; }
+    .chales-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <p>Carregando reservas…</p>
+</div>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="logo-area">
+    <div class="logo-icon">🌿</div>
+    <div class="logo-text">
+      <h1>Pousada Vale Verde</h1>
+      <span>Gerenciamento de Reservas</span>
+    </div>
+  </div>
+  <div class="header-date" id="headerDate"></div>
+</header>
+
+<!-- Main -->
+<div class="main-layout">
+
+  <!-- LEFT -->
+  <div class="left-panel">
+
+    <!-- Chalés Status -->
+    <div>
+      <div class="section-label">Chalés — Situação Atual</div>
+      <div class="chales-grid" id="chalesGrid"></div>
+    </div>
+
+    <!-- Reservas -->
+    <div class="reservas-section">
+      <div class="section-label" id="reservasLabel">Reservas</div>
+      <div class="reservas-list" id="reservasList">
+        <div class="empty-state">
+          <div class="spinner" style="margin: 0 auto 12px; width:28px;height:28px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT — FORM -->
+  <div class="right-panel">
+    <div>
+      <div class="panel-title">Nova Reserva</div>
+      <div class="panel-subtitle">Preencha os dados para registrar uma reserva</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="nomeInput">Nome do Hóspede</label>
+      <input class="form-input" id="nomeInput" type="text" placeholder="Nome completo" autocomplete="name">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="telInput">Telefone</label>
+      <input class="form-input" id="telInput" type="tel" placeholder="(00) 00000-0000" autocomplete="tel">
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">Chalé</div>
+      <div class="chale-select-grid" id="chaleSelectGrid"></div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label" for="diasInput">Dias de Estadia</label>
+        <input class="form-input" id="diasInput" type="number" min="1" max="30" placeholder="1" value="1">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="valorInput">Valor Total (R$)</label>
+        <div class="prefix-input-wrap">
+          <span class="prefix">R$</span>
+          <input class="form-input" id="valorInput" type="number" min="0" step="0.01" placeholder="0,00">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="checkInInput">Check-in</label>
+      <input class="form-input" id="checkInInput" type="date">
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="resumo-box" id="resumoBox" style="display:none">
+      <div class="resumo-row">
+        <span>Chalé selecionado</span>
+        <span id="resumoChale">—</span>
+      </div>
+      <div class="resumo-row">
+        <span>Período</span>
+        <span id="resumoPeriodo">—</span>
+      </div>
+      <div class="resumo-row total">
+        <span>Total</span>
+        <span id="resumoTotal">—</span>
+      </div>
+    </div>
+
+    <button class="btn-submit" id="btnSubmit" disabled>Confirmar Reserva</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Modal confirm delete -->
+<div class="modal-backdrop" id="modalBackdrop" hidden>
+  <div class="modal">
+    <h3>Cancelar reserva?</h3>
+    <p id="modalMsg">Esta ação não pode ser desfeita.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" id="btnCancelModal">Manter</button>
+      <button class="btn-confirm" id="btnConfirmModal">Cancelar reserva</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CHALES = [
+  { id: 1, nome: 'Chalé Ipê',    cor: '#4A6741' },
+  { id: 2, nome: 'Chalé Cedro',  cor: '#6B5B45' },
+  { id: 3, nome: 'Chalé Buriti', cor: '#45657A' },
+  { id: 4, nome: 'Chalé Aroeira',cor: '#7A5B45' },
+];
+
+let selectedChale = null;
+let pendingDeleteId = null;
+let reservas = [];
+
+// Date header
+function updateHeaderDate() {
+  const d = new Date();
+  const opts = { weekday:'long', day:'numeric', month:'long', year:'numeric' };
+  document.getElementById('headerDate').textContent =
+    d.toLocaleDateString('pt-BR', opts).replace(/^\w/, c => c.toUpperCase());
+}
+updateHeaderDate();
+
+// Default check-in
+document.getElementById('checkInInput').valueAsDate = new Date();
+
+// TOAST
+let toastTimer;
+function showToast(msg, error = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (error ? ' error' : '');
+  clearTimeout(toastTimer);
+  setTimeout(() => t.classList.add('show'), 10);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// FORMAT
+function fmtBRL(v) {
+  return 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function fmtDate(s) {
+  if (!s) return '';
+  const [y,m,d] = s.split('-');
+  return `${d}/${m}/${y}`;
+}
+function fmtTel(v) {
+  v = v.replace(/\D/g,'');
+  if (v.length <= 2) return v;
+  if (v.length <= 7) return `(${v.slice(0,2)}) ${v.slice(2)}`;
+  if (v.length <= 10) return `(${v.slice(0,2)}) ${v.slice(2,6)}-${v.slice(6)}`;
+  return `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7,11)}`;
+}
+document.getElementById('telInput').addEventListener('input', function() {
+  const pos = this.selectionStart;
+  const raw = this.value.replace(/\D/g,'');
+  this.value = fmtTel(raw);
+});
+
+// BUILD CHALE GRID (status)
+function buildChalesGrid(reservas) {
+  const ocupados = {};
+  reservas.forEach(r => {
+    if (!ocupados[r.chaleId]) ocupados[r.chaleId] = r;
+  });
+  const grid = document.getElementById('chalesGrid');
+  grid.innerHTML = '';
+  CHALES.forEach(c => {
+    const r = ocupados[c.id];
+    const div = document.createElement('div');
+    div.className = 'chale-card ' + (r ? 'ocupado' : 'livre');
+    div.innerHTML = `
+      <div class="chale-stripe" style="background:${c.cor}"></div>
+      <div class="chale-num">${c.id}</div>
+      <div class="chale-name">${c.nome}</div>
+      <span class="chale-status-badge ${r ? 'badge-ocupado' : 'badge-livre'}">
+        <span class="status-dot ${r ? 'dot-ocupado' : 'dot-livre'}"></span>
+        ${r ? 'Ocupado' : 'Livre'}
+      </span>
+      ${r ? `<div class="chale-guest-info">
+        <strong>${r.nome}</strong><br>
+        ${r.dias} dia${r.dias>1?'s':''} · ${fmtBRL(r.valor)}
+      </div>` : ''}
+    `;
+    grid.appendChild(div);
+  });
+}
+
+// CHALE SELECT BUTTONS (form)
+function buildChaleSelectGrid(reservas) {
+  const ocupados = new Set(reservas.map(r => r.chaleId));
+  const grid = document.getElementById('chaleSelectGrid');
+  grid.innerHTML = '';
+  CHALES.forEach(c => {
+    const isOcupado = ocupados.has(c.id);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'chale-select-btn' + (selectedChale === c.id ? ' selected' : '');
+    btn.disabled = isOcupado;
+    btn.innerHTML = `<strong>${c.nome}</strong>${isOcupado ? '<span class="ocupado-tag">Ocupado</span>' : ''}`;
+    if (!isOcupado) {
+      btn.addEventListener('click', () => {
+        selectedChale = (selectedChale === c.id) ? null : c.id;
+        buildChaleSelectGrid(reservas);
+        updateResumo();
+        validateForm();
+      });
+    }
+    grid.appendChild(btn);
+  });
+}
+
+// RESUMO
+function updateResumo() {
+  const dias = parseInt(document.getElementById('diasInput').value) || 0;
+  const valor = parseFloat(document.getElementById('valorInput').value) || 0;
+  const checkIn = document.getElementById('checkInInput').value;
+  const box = document.getElementById('resumoBox');
+
+  if (selectedChale && (dias > 0 || valor > 0)) {
+    box.style.display = 'flex';
+    const chale = CHALES.find(c => c.id === selectedChale);
+    document.getElementById('resumoChale').textContent = chale?.nome || '—';
+    if (dias > 0 && checkIn) {
+      const ci = new Date(checkIn + 'T12:00:00');
+      const co = new Date(ci);
+      co.setDate(co.getDate() + dias);
+      document.getElementById('resumoPeriodo').textContent =
+        `${fmtDate(checkIn)} → ${fmtDate(co.toISOString().split('T')[0])} (${dias}d)`;
+    } else {
+      document.getElementById('resumoPeriodo').textContent = dias > 0 ? `${dias} dia${dias>1?'s':''}` : '—';
+    }
+    document.getElementById('resumoTotal').textContent = valor > 0 ? fmtBRL(valor) : '—';
+  } else {
+    box.style.display = 'none';
+  }
+}
+
+// VALIDATE
+function validateForm() {
+  const nome = document.getElementById('nomeInput').value.trim();
+  const tel = document.getElementById('telInput').value.trim();
+  const valor = parseFloat(document.getElementById('valorInput').value);
+  const dias = parseInt(document.getElementById('diasInput').value);
+  const ok = nome.length >= 2 && tel.length >= 8 && selectedChale && valor > 0 && dias >= 1;
+  document.getElementById('btnSubmit').disabled = !ok;
+}
+
+['nomeInput','telInput','valorInput','diasInput','checkInInput'].forEach(id => {
+  document.getElementById(id).addEventListener('input', () => { updateResumo(); validateForm(); });
+});
+
+// RENDER RESERVAS LIST
+function renderReservas(reservas) {
+  const label = document.getElementById('reservasLabel');
+  const list = document.getElementById('reservasList');
+  label.textContent = `Reservas (${reservas.length})`;
+
+  if (reservas.length === 0) {
+    list.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">🏡</div>
+      <p>Nenhuma reserva registrada ainda.<br>Adicione a primeira pelo formulário.</p>
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = '';
+  [...reservas].reverse().forEach(r => {
+    const chale = CHALES.find(c => c.id === r.chaleId);
+    const item = document.createElement('div');
+    item.className = 'reserva-item';
+    item.innerHTML = `
+      <div class="reserva-chale-badge" style="background:${chale?.cor}">
+        ${r.chaleId}
+      </div>
+      <div class="reserva-info">
+        <div class="reserva-nome">${r.nome}</div>
+        <div class="reserva-meta">
+          ${chale?.nome} · ${r.dias} dia${r.dias>1?'s':''}
+          ${r.checkIn ? ` · Entrada ${fmtDate(r.checkIn)}` : ''}
+          ${r.tel ? ` · ${r.tel}` : ''}
+        </div>
+      </div>
+      <div class="reserva-valor">${fmtBRL(r.valor)}</div>
+      <button class="btn-delete" data-id="${r.id}" title="Cancelar reserva">✕</button>
+    `;
+    item.querySelector('.btn-delete').addEventListener('click', (e) => {
+      e.stopPropagation();
+      openDeleteModal(r.id, r.nome, chale?.nome);
+    });
+    list.appendChild(item);
+  });
+}
+
+// DELETE MODAL
+function openDeleteModal(id, nome, chaleNome) {
+  pendingDeleteId = id;
+  document.getElementById('modalMsg').textContent =
+    `Cancelar reserva de "${nome}" no ${chaleNome}? Esta ação não pode ser desfeita.`;
+  document.getElementById('modalBackdrop').hidden = false;
+}
+document.getElementById('btnCancelModal').addEventListener('click', () => {
+  document.getElementById('modalBackdrop').hidden = true;
+  pendingDeleteId = null;
+});
+document.getElementById('btnConfirmModal').addEventListener('click', async () => {
+  document.getElementById('modalBackdrop').hidden = true;
+  if (!pendingDeleteId || !db) return;
+  try {
+    reservas = reservas.filter(r => r.id !== pendingDeleteId);
+    saveReservas(reservas);
+    renderReservas(reservas);
+    buildChalesGrid(reservas);
+    buildChaleSelectGrid(reservas);
+    showToast('Reserva cancelada.');
+  } catch(e) {
+    showToast('Erro ao cancelar.', true);
+  }
+  pendingDeleteId = null;
+});
+
+// SUBMIT
+document.getElementById('btnSubmit').addEventListener('click', async () => {
+  if (!db) return;
+  const nome = document.getElementById('nomeInput').value.trim();
+  const tel = document.getElementById('telInput').value.trim();
+  const valor = parseFloat(document.getElementById('valorInput').value);
+  const dias = parseInt(document.getElementById('diasInput').value);
+  const checkIn = document.getElementById('checkInInput').value;
+
+  const id = `res_${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
+  const data = { id, nome, tel, valor, dias, chaleId: selectedChale, checkIn, criadoEm: Date.now() };
+
+  document.getElementById('btnSubmit').disabled = true;
+  document.getElementById('btnSubmit').textContent = 'Salvando…';
+  try {
+    reservas.push(data);
+    saveReservas(reservas);
+    renderReservas(reservas);
+    buildChalesGrid(reservas);
+    buildChaleSelectGrid(reservas);
+    showToast(`Reserva de ${nome} confirmada!`);
+    // Reset form
+    document.getElementById('nomeInput').value = '';
+    document.getElementById('telInput').value = '';
+    document.getElementById('valorInput').value = '';
+    document.getElementById('diasInput').value = '1';
+    document.getElementById('checkInInput').valueAsDate = new Date();
+    selectedChale = null;
+    buildChaleSelectGrid(reservas);
+    updateResumo();
+  } catch(e) {
+    showToast('Erro ao salvar reserva.', true);
+  }
+  document.getElementById('btnSubmit').textContent = 'Confirmar Reserva';
+  validateForm();
+});
+
+// STORAGE
+function loadReservas() {
+  try {
+    return JSON.parse(localStorage.getItem('pousada_reservas') || '[]');
+  } catch { return []; }
+}
+function saveReservas(list) {
+  try { localStorage.setItem('pousada_reservas', JSON.stringify(list)); } catch {}
+}
+
+// INIT
+function init() {
+  reservas = loadReservas();
+  renderReservas(reservas);
+  buildChalesGrid(reservas);
+  buildChaleSelectGrid(reservas);
+  document.getElementById('loadingOverlay').hidden = true;
+  validateForm();
+}
+init();
+</script>
